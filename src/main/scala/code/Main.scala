@@ -12,7 +12,7 @@ case class Message(
   author: String,
   text: String,
   posted: ZonedDateTime = ZonedDateTime.now,
-  id: UUID,
+  id: UUID = UUID.randomUUID,
 )
 
 object Message {
@@ -24,20 +24,20 @@ object Message {
 case class MessageId(value: UUID)
 
 object MessageId {
-  // Define a Format[Message] that serializes a message ID to a string
+  // Define a Format[Message]
+  // that serializes a message to a string
 }
 
 // ----------------------------------------------
 
-// Now go back and modify Message so its primary key is a MessageId!
-// Do you need to write any additional Formats?
+// Revise the definition of Message to use MessageId instead of UUID
 
 // ----------------------------------------------
 
 sealed abstract class TrafficLight
-final case object Red extends TrafficLight
-final case object Amber extends TrafficLight
-final case object Green extends TrafficLight
+case object Red extends TrafficLight
+case object Amber extends TrafficLight
+case object Green extends TrafficLight
 
 object TrafficLight {
   // Define a Format[TrafficLight] that serializes a value to a string
@@ -76,25 +76,25 @@ object Main extends App {
     println("Reread   : " + Json.toJson(value).validate[A])
   }
 
-  println("MessageId")
-  // roundTrip(MessageId())
+  println("\nMessageId")
+  // roundTrip(MessageId(UUID.randomUUID))
   // println(JsNull.validate[MessageId])
 
-  println("Message")
+  println("\nMessage")
   // roundTrip(Message("Author", "Text"))
   // println(JsNull.validate[Message])
 
-  println("Color")
+  println("\nColor")
   // roundTrip(new Color(0, 127, 255))
   // println(JsNull.validate[Color])
 
-  println("TrafficLight")
+  println("\nTrafficLight")
   // roundTrip(Red)
   // roundTrip(Amber)
   // roundTrip(Green)
   // println(JsNull.validate[TrafficLight])
 
-  println("Animal")
+  println("\nAnimal")
   // roundTrip(Dog("Sparky"))
   // roundTrip(Insect(6))
   // roundTrip(Swallow(100))
