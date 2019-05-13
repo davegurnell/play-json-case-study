@@ -1,34 +1,36 @@
 package code
 
+import java.time.ZonedDateTime
+import java.util.UUID
+
 import play.api.libs.json._
 import play.api.libs.functional.syntax._
 
 // ----------------------------------------------
 
-import java.util.UUID
-
-case class MessageId(value: Long = -1L)
-
-object MessageId {
-  // Define a Format[Message]
-  // that serializes a message to a string
-}
-
-// ----------------------------------------------
-
-import java.time.ZonedDateTime
-
 case class Message(
   author: String,
   text: String,
   posted: ZonedDateTime = ZonedDateTime.now,
-  id: MessageId = MessageId(),
+  id: UUID,
 )
 
 object Message {
-  // Define an OFormat[Message]
-  // that serializes a message to an object
+  // Define an OFormat[Message] that serializes a message to an object
 }
+
+// ----------------------------------------------
+
+case class MessageId(value: UUID)
+
+object MessageId {
+  // Define a Format[Message] that serializes a message ID to a string
+}
+
+// ----------------------------------------------
+
+// Now go back and modify Message so its primary key is a MessageId!
+// Do you need to write any additional Formats?
 
 // ----------------------------------------------
 
@@ -38,8 +40,7 @@ final case object Amber extends TrafficLight
 final case object Green extends TrafficLight
 
 object TrafficLight {
-  // Define a Format[TrafficLight]
-  // that serializes a value to an integer
+  // Define a Format[TrafficLight] that serializes a value to a string
 }
 
 // ----------------------------------------------
